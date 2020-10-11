@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "esModuleInterop" : true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "module": "umd",
+    "target": "es5",
+    "outDir": "dist"
+  },
+  "files": [
+    "src/index.ts"
+  ]
+}
