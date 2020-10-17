@@ -41,13 +41,59 @@ enum RelType {
 }
 
 /**
- * link tag
+ * link injection location
+ *
  */
-interface LinkItemOption {
+enum InjectionLocation { 
   /**
-   * href attribute of link tag
+   * inject link item before meta by html-webpack-plugin
    */
-  href: string
+  BeforeMeta = "beforMeta", 
+  /**
+   * inject link item after meta by html-webpack-plugin 
+   */
+  AfterMeta = "afterMeta", 
+  /**
+   * inject link item before css by html-webpack-plugin in head tag
+   */
+  BeforeCssHead = "beforeCssHead",
+  /**
+   * inject link item after css by html-webpack-plugin in head tag
+   */
+  AfterCssHead = "afterCssHead", 
+  /**
+   * inject link item before css by html-webpack-plugin in body tag
+   */
+  BeforeCssBody = "beforeCssBody",
+  /**
+   * inject link item after css by html-webpack-plugin in body tag
+   */
+  AfterCssBody = "afterCssBody", 
+  /**
+   * inject link item before script html-webpack-plugin in head tag
+   */
+  BeforeScriptHead = "beforeScriptHead", 
+  /**
+   * inject link item after script by html-webpack-plugin in head tag
+   */
+  AfterScriptHead = "afterScriptHead",
+  /**
+   * inject link item before script by html-webpack-plugin in body tag
+   */
+  BeforeScriptBody = "beforeScriptBody", 
+  /**
+   * inject link item after script by html-webpack-plugin in body tag
+   */
+  AfterScriptBody = "afterScriptBody"
+}
+
+
+
+/**
+ * link tag attributes
+ */
+interface LinkAttributes {
+
   /**
    * crossorigin attribute of link tag
    */
@@ -82,6 +128,39 @@ interface LinkItemOption {
   type?: string 
 }
 
+
+/**
+ * link tag
+ */
+interface LinkItemOption extends LinkAttributes {
+  /**
+   * href attribute or entry filter
+   */
+  href: string | ((entryName: string) => string | null | undefined)
+
+  /**
+   * location
+   */
+  injectionLocation?: InjectionLocation
+
+}
+
+interface ProcessedLinkItem extends LinkAttributes {
+  /**
+   * href attribute
+   */
+  href: string
+}
+
+
+/**
+ * create href from entry name
+ */
+interface EntryNameLinkItem extends LinkAttributes {
+  entryToHref: ((entryName: string) => string | null | undefined)
+}
+
+
 /**
  * option
  */
@@ -93,7 +172,16 @@ interface Option {
 }
 
 
-export { Option, LinkItemOption, 
-  CrossOriginType, ReferencePolicyType, RelType }
+export {
+  Option,
+  LinkItemOption, 
+  CrossOriginType,
+  ReferencePolicyType,
+  RelType,
+  InjectionLocation,
+  LinkAttributes,
+  ProcessedLinkItem,
+  EntryNameLinkItem
+}
 
 // vi: se ts=2 sw=2 et:
