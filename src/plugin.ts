@@ -283,9 +283,11 @@ class HtmlLinkInjection {
       'entryNames' 
     ] 
 
+
     for (let key0 in keyMap0) {
       const order = headBodyInjectionOrder[key0]
       order.forEach(loc => {
+
         mergeOrder0.forEach(processedKey => {
           const items = processedLinkTags[processedKey][loc]
           if (items) {
@@ -360,14 +362,13 @@ class HtmlLinkInjection {
       linkItems: {} 
     }
     linkItems.forEach(elem => {
-      let loc = elem.injectionLocation
-      if (!loc) {
-        loc = InjectionLocation.AfterCssHead
-      }
+      const loc = elem.injectionLocation || InjectionLocation.AfterCssHead
+      const attr = elem.attributes || { }
       if (typeof elem.href === 'function') {
         const linkItem : EntryNameLinkItem = <any>{
-          ...elem,
+          ...attr,
           entryNameToHref: elem.href
+
         }
         let linkItems: EntryNameLinkItem[]
         if (!(loc in result.entryNames)) {
@@ -385,7 +386,10 @@ class HtmlLinkInjection {
         } else {
           linkItems = result.linkItems[loc]
         }
-        linkItems.push(<any>elem)
+        linkItems.push({
+          href: elem.href,
+          ...attr
+        })
       }
     }) 
     return result

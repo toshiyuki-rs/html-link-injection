@@ -1,54 +1,75 @@
 import path from 'path'
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import * as linkInjection from '../src/index'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import {
+  HtmlLinkInjection, 
+  Option as LinkInjectionOption } from '../src/index'
 import { createFsFromVolume, Volume } from 'memfs'
 
 
 /**
  * test environment
  */
-class Env3 {
+class Env4 {
 
 
   constructor() {
   }
   
-  runWebpack(): Promise<{
+  runWebpack(
+    entry: string | string[],
+    options: LinkInjectionOption): Promise<{
     stats: webpack.Stats, 
     volume: typeof Volume
   }> {
+    const inputDir = __dirname
+    const outputDir = path.join(__dirname, 'output') 
     const config: webpack.Configuration  = {
-      context: __dirname,
+      context: inputDir,
       mode: 'development',
-      entry: './data/index.js',
+      entry,
       output: {
-        path: __dirname,
+        path: outputDir,
         filename: 'bundle.js'
       },
       plugins: [
-        new HtmlWebpackPlugin(),
-        new linkInjection.HtmlLinkInjection(<linkInjection.Option>{
-          link: {
-            href: 'main.css',
-            attributes: {
-              rel: 'stylesheet' 
+        new HtmlWebpackPlugin(
+          {
+            meta: {
+              viewport: 'width-device-width initial-scale=1, shrink-to-fit=no'
             }
           }
-        })
-      ]
+        ),
+        new HtmlLinkInjection(options),
+        new MiniCssExtractPlugin()
+      ],
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use:[ 
+              {
+                loader: MiniCssExtractPlugin.loader
+              },
+              'css-loader'
+            ] 
+          }
+        ]
+      }
     }
-
     const htmlResult = path.join(config.output.path, 'index.html')
 
     const compiler = webpack(config)
     const volume = new Volume()
-    const ofsBase = createFsFromVolume(volume)
-    const outputFileSystem: any  = {
-      ...ofsBase,
+
+    const ioFsBase = createFsFromVolume(volume)
+
+    const ioFileSystem: any  = {
+      ...ioFsBase,
       join: path.join.bind(path)
     } 
-    compiler.outputFileSystem = <webpack.OutputFileSystem>outputFileSystem
+    compiler.outputFileSystem = <webpack.OutputFileSystem>ioFileSystem
 
     const result = new Promise<{ stats: webpack.Stats, 
         volume: typeof Volume }>((resolve, reject) => {
@@ -68,4 +89,4 @@ class Env3 {
 }
 
 // vi: se ts=2 sw=2 et:
-export { Env3 }
+export { Env4 }

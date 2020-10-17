@@ -5,7 +5,6 @@
 enum CrossOriginType {
   Anonymouse = 'anonymous',
   UseCredentials = 'use-credentials' 
-
 }
 
 /**
@@ -132,32 +131,62 @@ interface LinkAttributes {
 /**
  * link tag
  */
-interface LinkItemOption extends LinkAttributes {
+interface LinkItemOption {
   /**
    * href attribute or entry filter
    */
   href: string | ((entryName: string) => string | null | undefined)
+  
+  /**
+   * location
+   */
+  injectionLocation?: InjectionLocation
+
+
+  /**
+   * link attributes
+   */
+  attributes?: LinkAttributes
+}
+
+interface ProcessedLinkItem {
+  /**
+   * href attribute
+   */
+  href: string
 
   /**
    * location
    */
   injectionLocation?: InjectionLocation
 
-}
 
-interface ProcessedLinkItem extends LinkAttributes {
   /**
-   * href attribute
+   * link attributes
    */
-  href: string
+  attributes?: LinkAttributes
 }
 
 
 /**
  * create href from entry name
  */
-interface EntryNameLinkItem extends LinkAttributes {
+interface EntryNameLinkItem {
+
+  /**
+   * entries to href
+   */
   entryToHref: ((entryName: string) => string | null | undefined)
+
+  /**
+   * location
+   */
+  injectionLocation?: InjectionLocation
+
+  /**
+   * link attributes
+   */
+  attributes?: LinkAttributes
 }
 
 
