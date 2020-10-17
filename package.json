@@ -2,11 +2,14 @@
   "name": "@oc-soft/html-link-injection",
   "version": "1.0.0",
   "description": "link tag injection plugin for html-webpack-plugin",
-  "main": "dist/index.js",
-  "types": "src/index.ts",
+  "main": "dist/umd/index.js",
+  "types": "src/umd/index.ts",
   "scripts": {
     "test": "mocha",
-    "build-dist": "tsc --build tsconfig-dist.json"
+    "build-dist": "tsc --build tsconfig-umd-dist.json && tsc --build tsconfig-esnext-dist.json",
+    "build-schema": "ts-node src/gen-schema",
+    "setup-assets": "npm run build-schema && ts-node tool/setup-assets.ts",
+    "prepare": "npm run build-dist && npm run setup-assets && npm test"
   },
   "author": "Toshiyuki Ogawa",
   "license": "ISC",

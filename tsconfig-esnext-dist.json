@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "esModuleInterop" : true,
+    "declaration": true,
     "moduleResolution": "node",
     "sourceMap": true,
-    "module": "umd",
-    "target": "es5",
-    "outDir": "dist"
+    "module": "esnext",
+    "target": "es6",
+    "outDir": "dist/esnext"
   },
   "files": [
     "src/index.ts"

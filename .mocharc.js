@@ -1,7 +1,7 @@
 
 const config = {
   require: ['ts-node/register'],
-  extension: ['ts']
+  extension: ['ts', 'js' ]
 }
 
 

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "esModuleInterop" : true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "module": "umd",
+    "target": "es6",
+    "outDir": "dist/umd"
+  },
+  "files": [
+    "src/index.ts"
+  ]
+}
